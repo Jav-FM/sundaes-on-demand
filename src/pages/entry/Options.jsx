@@ -19,6 +19,7 @@ const Options = ({ optionType }) => {
       .get(`http://localhost:3030/${optionType}`)
       .then((response) => {
         setitems(response.data);
+        setError(false);
       })
       .catch((error) => {
         setError(true);
@@ -29,7 +30,6 @@ const Options = ({ optionType }) => {
     return <AlertBanner />;
   }
 
-  // TODO: replace null with Topping.Options when available
   const ItemComponent = optionType === "scoops" ? ScoopOption : ToppingOption;
   const title = optionType[0].toUpperCase() + optionType.slice(1).toLowerCase();
 
