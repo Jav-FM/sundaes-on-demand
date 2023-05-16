@@ -1,5 +1,9 @@
 import { rest } from "msw";
 
+// const sleep = (ms) => {
+//   return new Promise ((resolve) => setTimeout(resolve, ms))
+// }
+
 export const handlers = [
   rest.get("http://localhost:3030/scoops", (req, res, ctx) => {
     return res(
@@ -17,5 +21,9 @@ export const handlers = [
         { name: "Hot fudge", imagePath: "/images/hot-fudge.png" },
       ])
     );
+  }),
+  rest.post("http://localhost:3030/order", (req, res, ctx) => {
+    const orderNumber = Math.floor(Math.random() * 10000000000);
+    return res.json({ orderNumber });
   }),
 ];
