@@ -36,22 +36,25 @@ test("order phases for happy path", async () => {
   expect(screen.getByText("Cherries")).toBeInTheDocument();
 
   // accept terms and conditions and click button to confirm order
-  const termsAndConditionsCheckbox = screen.getByRole("checkbox");
+  const termsAndConditionsCheckbox = screen.getByRole("checkbox", {
+    name: /terms and conditions/i,
+  });
+  expect(termsAndConditionsCheckbox).toBeInTheDocument();
   await user.click(termsAndConditionsCheckbox);
 
   const confirmationButton = screen.getByRole("button", {
-    name: /onfirm order/i,
+    name: /confirm order/i,
   });
+  expect(confirmationButton).toBeInTheDocument();
   await user.click(confirmationButton);
 
   // Expect "loading" to show
-  const loading = screen.getByText(/loading/i);
-  expect(loading).toBeInTheDocument();
+  const loadingText = screen.getByText(/loading/i);
+  expect(loadingText).toBeInTheDocument();
 
   // confirm order number on confirmation page
-  const thankYouHeader = await screen.findByRole("heading", {
-    name: /thank you/i,
-  });
+
+  const thankYouHeader = await screen.findByText(/thank you/i);
   expect(thankYouHeader).toBeInTheDocument();
 
   // Expect that loading has dissappeared
@@ -62,13 +65,16 @@ test("order phases for happy path", async () => {
   expect(orderNumber).toBeInTheDocument();
 
   // find and click "new order" button on confirmation page
-  const newOrderButton = screen.getByRole("button", { name: /new order/i });
+  const newOrderButton = screen.getByRole("button", {
+    name: /create new order/i,
+  });
+
   await user.click(newOrderButton);
 
   // check that scoops and toppings subtotals have been reset
   const scoopsResetedTotal = await screen.findByText("Scoops total: $0.00");
   expect(scoopsResetedTotal).toBeInTheDocument();
-  const toppingsResetedTotal = screen.getByText("Toopings total: $0.00");
+  const toppingsResetedTotal = screen.getByText("Toppings total: $0.00");
   expect(toppingsResetedTotal).toBeInTheDocument();
 
   // Unmount the component to trigget cleanup and avoid "not wrapped in act()" error

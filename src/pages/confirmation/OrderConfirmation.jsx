@@ -11,14 +11,15 @@ const OrderConfirmation = ({ setOrderPhase }) => {
     axios
       .post("http://localhost:3030/order")
       .then((response) => {
-        setOrderNumber(response.data.orderNumber);
+        setTimeout(() => {
+          setOrderNumber(response.data.orderNumber);
+        }, 1000);
       })
       .catch((e) => {
         // TODO
       });
   }, []);
 
-  console.log(orderNumber);
   const handleClick = () => {
     resetOrder();
     setOrderPhase("inProgress");
